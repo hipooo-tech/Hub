@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My PYQ Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --bg2: #0f1524;
+    --bg3: #151c30;
+    --card: #131929;
+    --card-border: rgba(99,130,255,0.13);
+    --accent: #4f7cff;
+    --accent2: #7b9fff;
+    --accent-glow: rgba(79,124,255,0.18);
+    --text: #e8eaf6;
+    --text2: #8b96b8;
+    --text3: #5a6480;
+    --nav-bg: rgba(10,14,26,0.85);
+    --pill-bg: #1a2238;
+    --pill-active: #4f7cff;
+    --shadow: 0 4px 32px rgba(0,0,0,0.45);
+    --radius: 16px;
+    --tag-bg: rgba(79,124,255,0.12);
+  }
+  [data-theme="light"] {
+    --bg: #f0f4ff;
+    --bg2: #e8edf8;
+    --bg3: #dce3f5;
+    --card: #ffffff;
+    --card-border: rgba(79,124,255,0.15);
+    --accent: #3a63e8;
+    --accent2: #5a7ef5;
+    --accent-glow: rgba(79,124,255,0.1);
+    --text: #0d1226;
+    --text2: #4a5373;
+    --text3: #8a93b0;
+    --nav-bg: rgba(240,244,255,0.88);
+    --pill-bg: #dce3f5;
+    --pill-active: #3a63e8;
+    --shadow: 0 4px 24px rgba(60,80,180,0.1);
+    --tag-bg: rgba(58,99,232,0.1);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    transition: background 0.35s, color 0.35s;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: var(--nav-bg);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-bottom: 1px solid var(--card-border);
+    padding: 0 clamp(16px, 5vw, 48px);
+    height: 64px;
+    display: flex; align-items: center; justify-content: space-between;
+    transition: background 0.35s;
+  }
+  .nav-brand {
+    display: flex; align-items: center; gap: 10px;
+    text-decoration: none;
+  }
+  .nav-logo {
+    width: 36px; height: 36px;
+    background: var(--accent);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 17px;
+    color: #fff;
+    box-shadow: 0 0 16px var(--accent-glow);
+  }
+  .nav-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700; font-size: 18px;
+    color: var(--text);
+    letter-spacing: -0.3px;
+  }
+  .nav-right { display: flex; align-items: center; gap: 8px; }
+  .nav-link {
+    font-size: 14px; font-weight: 500;
+    color: var(--text2);
+    text-decoration: none;
+    padding: 7px 14px;
+    border-radius: 8px;
+    transition: background 0.2s, color 0.2s;
+    cursor: pointer;
+  }
+  .nav-link:hover { background: var(--pill-bg); color: var(--text); }
+
+  .theme-btn {
+    width: 38px; height: 38px;
+    background: var(--pill-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    transition: background 0.2s, transform 0.2s;
+    color: var(--text);
+  }
+  .theme-btn:hover { background: var(--bg3); transform: scale(1.08); }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 120px clamp(16px, 5vw, 48px) 64px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-glow {
+    position: absolute;
+    top: 30px; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 300px;
+    background: radial-gradient(ellipse, rgba(79,124,255,0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 7px;
+    background: var(--tag-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-size: 13px; font-weight: 500;
+    color: var(--accent2);
+    margin-bottom: 24px;
+    animation: fadeUp 0.6s ease both;
+  }
+  .hero-badge span { width: 7px; height: 7px; background: var(--accent); border-radius: 50%; display: inline-block; }
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(36px, 6vw, 72px);
+    line-height: 1.08;
+    letter-spacing: -2px;
+    color: var(--text);
+    margin-bottom: 18px;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+  .hero h1 em {
+    font-style: normal;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero p {
+    font-size: clamp(15px, 2vw, 18px);
+    color: var(--text2);
+    max-width: 520px;
+    margin: 0 auto 36px;
+    line-height: 1.65;
+    font-weight: 300;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+  .hero-stats {
+    display: flex; justify-content: center; gap: clamp(24px, 4vw, 56px);
+    animation: fadeUp 0.6s 0.3s ease both;
+    flex-wrap: wrap;
+  }
+  .hero-stat { text-align: center; }
+  .hero-stat .num {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 28px;
+    color: var(--text);
+  }
+  .hero-stat .lbl { font-size: 12px; color: var(--text3); font-weight: 400; margin-top: 2px; text-transform: uppercase; letter-spacing: 1px; }
+
+  /* ── MAIN ── */
+  main { max-width: 860px; margin: 0 auto; padding: 0 clamp(16px,5vw,24px) 80px; }
+
+  /* ── TABS ── */
+  .tab-row {
+    display: flex; gap: 8px;
+    background: var(--bg3);
+    border-radius: 14px;
+    padding: 5px;
+    margin-bottom: 28px;
+  }
+  .tab-btn {
+    flex: 1; padding: 12px 0;
+    background: transparent;
+    border: none; cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px; font-weight: 500;
+    color: var(--text2);
+    border-radius: 10px;
+    transition: background 0.22s, color 0.22s, box-shadow 0.22s;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .tab-btn.active {
+    background: var(--accent);
+    color: #fff;
+    box-shadow: 0 4px 20px rgba(79,124,255,0.35);
+  }
+  .tab-btn:not(.active):hover { background: var(--pill-bg); color: var(--text); }
+
+  /* ── FILTER CARD ── */
+  .filter-card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    padding: clamp(20px, 4vw, 32px);
+    box-shadow: var(--shadow);
+    margin-bottom: 36px;
+  }
+  .filter-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+  .field-group { display: flex; flex-direction: column; gap: 7px; }
+  .field-group label {
+    font-size: 12px; font-weight: 500;
+    color: var(--text3);
+    text-transform: uppercase; letter-spacing: 0.8px;
+  }
+  select, input[type="text"] {
+    width: 100%;
+    background: var(--bg2);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 11px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+  }
+  select:focus, input[type="text"]:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-glow);
+  }
+  select option { background: var(--bg2); }
+
+  .search-btn {
+    width: 100%;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    padding: 14px 0;
+    font-family: 'Syne', sans-serif;
+    font-size: 15px; font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.2px;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    transition: transform 0.18s, box-shadow 0.18s, background 0.18s;
+    box-shadow: 0 4px 24px rgba(79,124,255,0.3);
+  }
+  .search-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(79,124,255,0.45); }
+  .search-btn:active { transform: translateY(0); }
+
+  /* ── RESULTS ── */
+  .results-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .results-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700; font-size: 18px;
+    color: var(--text);
+  }
+  .results-count {
+    font-size: 13px; color: var(--text3);
+    background: var(--pill-bg);
+    padding: 4px 12px; border-radius: 100px;
+  }
+
+  .results-grid { display: flex; flex-direction: column; gap: 12px; }
+
+  .paper-card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    display: flex; align-items: center; gap: 16px;
+    transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+    animation: fadeUp 0.4s ease both;
+    cursor: default;
+  }
+  .paper-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px var(--accent-glow);
+  }
+  .paper-icon {
+    width: 44px; height: 44px; flex-shrink: 0;
+    background: var(--tag-bg);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+  }
+  .paper-info { flex: 1; min-width: 0; }
+  .paper-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 600; font-size: 15px;
+    color: var(--text);
+    margin-bottom: 6px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .paper-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag {
+    font-size: 11px; font-weight: 500;
+    color: var(--accent2);
+    background: var(--tag-bg);
+    padding: 3px 9px; border-radius: 100px;
+    white-space: nowrap;
+  }
+  .paper-actions { display: flex; gap: 8px; flex-shrink: 0; }
+  .btn-view, .btn-dl {
+    padding: 9px 16px;
+    border-radius: 9px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px; font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: transform 0.15s, box-shadow 0.15s;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .btn-view {
+    background: var(--tag-bg);
+    color: var(--accent2);
+    border: 1px solid var(--card-border);
+  }
+  .btn-view:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .btn-dl {
+    background: var(--accent);
+    color: #fff;
+    box-shadow: 0 2px 12px rgba(79,124,255,0.25);
+  }
+  .btn-dl:hover { transform: translateY(-1px); box-shadow: 0 4px 18px rgba(79,124,255,0.4); }
+
+  .empty-state {
+    text-align: center; padding: 48px 24px;
+    color: var(--text3);
+    display: none;
+  }
+  .empty-state .emoji { font-size: 40px; margin-bottom: 12px; }
+  .empty-state p { font-size: 15px; }
+
+  /* ── ABOUT MODAL ── */
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: 200;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(6px);
+    display: none; align-items: center; justify-content: center;
+    padding: 20px;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    padding: 36px;
+    max-width: 440px; width: 100%;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.5);
+    animation: popIn 0.3s ease;
+  }
+  .modal h2 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 22px;
+    color: var(--text); margin-bottom: 12px;
+  }
+  .modal p { font-size: 14px; color: var(--text2); line-height: 1.7; margin-bottom: 10px; }
+  .modal-close {
+    margin-top: 20px; width: 100%;
+    background: var(--accent); color: #fff;
+    border: none; border-radius: 10px; padding: 12px;
+    font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .modal-close:hover { opacity: 0.88; }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 32px 20px;
+    color: var(--text3);
+    font-size: 13px;
+    border-top: 1px solid var(--card-border);
+  }
+  footer span { color: var(--accent2); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes popIn {
+    from { opacity: 0; transform: scale(0.93); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+
+  /* ── MOBILE ── */
+  @media (max-width: 600px) {
+    .paper-card { flex-wrap: wrap; }
+    .paper-actions { width: 100%; }
+    .btn-view, .btn-dl { flex: 1; justify-content: center; }
+    .hero-stats { gap: 20px; }
+    .filter-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-brand" href="#">
+    <div class="nav-logo">P</div>
+    <span class="nav-title">My PYQ Hub</span>
+  </a>
+  <div class="nav-right">
+    <span class="nav-link" onclick="openAbout()">About</span>
+    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="Toggle theme">🌙</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-badge"><span></span> Free for all students</div>
+  <h1>Find Your <em>Past Papers</em><br>In Seconds</h1>
+  <p>Access thousands of previous year question papers for university academics and competitive exams — all in one place.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="num">5,000+</div><div class="lbl">Papers</div></div>
+    <div class="hero-stat"><div class="num">120+</div><div class="lbl">Courses</div></div>
+    <div class="hero-stat"><div class="num">40+</div><div class="lbl">Exams</div></div>
+    <div class="hero-stat"><div class="num">Free</div><div class="lbl">Always</div></div>
+  </div>
+</section>
+
+<!-- MAIN -->
+<main>
+
+  <!-- TABS -->
+  <div class="tab-row">
+    <button class="tab-btn active" id="tab-academic" onclick="switchTab('academic')">
+      🎓 Academic Year
+    </button>
+    <button class="tab-btn" id="tab-competitive" onclick="switchTab('competitive')">
+      🏆 Competitive Exams
+    </button>
+  </div>
+
+  <!-- FILTER CARD -->
+  <div class="filter-card">
+    <!-- Academic Filters -->
+    <div id="form-academic">
+      <div class="filter-grid">
+        <div class="field-group">
+          <label>Course / Degree</label>
+          <select id="ac-course">
+            <option value="">All Courses</option>
+            <option>BCA</option>
+            <option>B.Tech (CS)</option>
+            <option>B.Tech (IT)</option>
+            <option>BBA</option>
+            <option>B.Com</option>
+            <option>BSc (Math)</option>
+            <option>BSc (Physics)</option>
+            <option>MCA</option>
+            <option>MBA</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label>Semester</label>
+          <select id="ac-sem">
+            <option value="">All Semesters</option>
+            <option>Semester 1</option>
+            <option>Semester 2</option>
+            <option>Semester 3</option>
+            <option>Semester 4</option>
+            <option>Semester 5</option>
+            <option>Semester 6</option>
+            <option>Semester 7</option>
+            <option>Semester 8</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label>Year</label>
+          <select id="ac-year">
+            <option value="">All Years</option>
+            <option>2024</option>
+            <option>2023</option>
+            <option>2022</option>
+            <option>2021</option>
+            <option>2020</option>
+            <option>2019</option>
+          </select>
+        </div>
+      </div>
+      <button class="search-btn" onclick="doSearch()">
+        🔍 Search Papers
+      </button>
+    </div>
+
+    <!-- Competitive Filters -->
+    <div id="form-competitive" style="display:none">
+      <div class="filter-grid">
+        <div class="field-group">
+          <label>Exam Name</label>
+          <select id="cp-exam">
+            <option value="">All Exams</option>
+            <option>JEE Main</option>
+            <option>JEE Advanced</option>
+            <option>CUET</option>
+            <option>GATE CS</option>
+            <option>GATE EC</option>
+            <option>CAT</option>
+            <option>UPSC Prelims</option>
+            <option>NDA</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label>Subject</label>
+          <select id="cp-subject">
+            <option value="">All Subjects</option>
+            <option>Physics</option>
+            <option>Chemistry</option>
+            <option>Mathematics</option>
+            <option>General Aptitude</option>
+            <option>English</option>
+            <option>Logical Reasoning</option>
+            <option>Computer Science</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label>Year</label>
+          <select id="cp-year">
+            <option value="">All Years</option>
+            <option>2024</option>
+            <option>2023</option>
+            <option>2022</option>
+            <option>2021</option>
+            <option>2020</option>
+            <option>2019</option>
+          </select>
+        </div>
+      </div>
+      <button class="search-btn" onclick="doSearch()">
+        🔍 Search Papers
+      </button>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="results-section" style="display:none">
+    <div class="results-header">
+      <div class="results-title">Results</div>
+      <div class="results-count" id="results-count">0 papers</div>
+    </div>
+    <div class="results-grid" id="results-grid"></div>
+    <div class="empty-state" id="empty-state">
+      <div class="emoji">📭</div>
+      <p>No papers found for this selection.<br>Try different filters.</p>
+    </div>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  Built with ❤️ for students &nbsp;·&nbsp; <span>My PYQ Hub</span> &nbsp;·&nbsp; Free forever
+</footer>
+
+<!-- ABOUT MODAL -->
+<div class="modal-overlay" id="modal" onclick="closeAboutOutside(event)">
+  <div class="modal">
+    <h2>About My PYQ Hub</h2>
+    <p>My PYQ Hub is a free, student-first platform for finding previous year question papers — for university exams and competitive entrance tests alike.</p>
+    <p>Search by course, semester, year, or exam type and get instant access to relevant papers. View them in-browser or download for offline use.</p>
+    <p style="color:var(--text3); font-size:13px;">Built as an open educational resource. No login required.</p>
+    <button class="modal-close" onclick="closeAbout()">Close</button>
+  </div>
+</div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────────────
+const academicPapers = [
+  { title: "Data Structures & Algorithms", course: "BCA", sem: "Semester 3", year: "2023", code: "BCA-301", emoji: "📊" },
+  { title: "Database Management Systems", course: "BCA", sem: "Semester 4", year: "2023", code: "BCA-402", emoji: "🗄️" },
+  { title: "Operating Systems", course: "BCA", sem: "Semester 4", year: "2022", code: "BCA-401", emoji: "💻" },
+  { title: "Computer Networks", course: "BCA", sem: "Semester 5", year: "2022", code: "BCA-501", emoji: "🌐" },
+  { title: "Software Engineering", course: "BCA", sem: "Semester 5", year: "2021", code: "BCA-502", emoji: "🛠️" },
+  { title: "Web Technology", course: "BCA", sem: "Semester 6", year: "2023", code: "BCA-601", emoji: "🌍" },
+  { title: "Object Oriented Programming", course: "B.Tech (CS)", sem: "Semester 2", year: "2024", code: "CS-201", emoji: "🧱" },
+  { title: "Discrete Mathematics", course: "B.Tech (CS)", sem: "Semester 3", year: "2023", code: "CS-301", emoji: "📐" },
+  { title: "Computer Architecture", course: "B.Tech (CS)", sem: "Semester 4", year: "2022", code: "CS-402", emoji: "⚙️" },
+  { title: "Machine Learning", course: "B.Tech (CS)", sem: "Semester 7", year: "2024", code: "CS-701", emoji: "🤖" },
+  { title: "Financial Accounting", course: "B.Com", sem: "Semester 1", year: "2023", code: "COM-101", emoji: "💰" },
+  { title: "Business Statistics", course: "BBA", sem: "Semester 2", year: "2022", code: "BBA-202", emoji: "📈" },
+  { title: "Linear Algebra", course: "BSc (Math)", sem: "Semester 3", year: "2023", code: "MATH-301", emoji: "🔢" },
+  { title: "Classical Mechanics", course: "BSc (Physics)", sem: "Semester 2", year: "2021", code: "PHY-201", emoji: "⚛️" },
+  { title: "Advanced Java Programming", course: "MCA", sem: "Semester 2", year: "2024", code: "MCA-201", emoji: "☕" },
+];
+
+const competitivePapers = [
+  { title: "JEE Main – Physics", exam: "JEE Main", subject: "Physics", year: "2024", shift: "Shift 1", emoji: "⚡" },
+  { title: "JEE Main – Chemistry", exam: "JEE Main", subject: "Chemistry", year: "2024", shift: "Shift 2", emoji: "🧪" },
+  { title: "JEE Main – Mathematics", exam: "JEE Main", subject: "Mathematics", year: "2024", shift: "Shift 1", emoji: "📐" },
+  { title: "JEE Advanced – Paper 1", exam: "JEE Advanced", subject: "Mathematics", year: "2023", shift: "Morning", emoji: "🏆" },
+  { title: "JEE Advanced – Paper 2", exam: "JEE Advanced", subject: "Physics", year: "2023", shift: "Afternoon", emoji: "🏆" },
+  { title: "CUET – English", exam: "CUET", subject: "English", year: "2023", shift: "Slot 1", emoji: "📝" },
+  { title: "CUET – General Aptitude", exam: "CUET", subject: "General Aptitude", year: "2023", shift: "Slot 2", emoji: "🧠" },
+  { title: "GATE CS – Full Paper", exam: "GATE CS", subject: "Computer Science", year: "2024", shift: "Morning", emoji: "💻" },
+  { title: "GATE CS – Data Structures", exam: "GATE CS", subject: "Computer Science", year: "2023", shift: "Afternoon", emoji: "📦" },
+  { title: "CAT – Quantitative Ability", exam: "CAT", subject: "Mathematics", year: "2023", shift: "Slot 1", emoji: "📊" },
+  { title: "CAT – Verbal Reasoning", exam: "CAT", subject: "English", year: "2023", shift: "Slot 2", emoji: "📖" },
+  { title: "UPSC Prelims – General Studies 1", exam: "UPSC Prelims", subject: "General Aptitude", year: "2023", shift: "Morning", emoji: "🗺️" },
+  { title: "JEE Main – Physics", exam: "JEE Main", subject: "Physics", year: "2022", shift: "Shift 1", emoji: "⚡" },
+  { title: "JEE Main – Mathematics", exam: "JEE Main", subject: "Mathematics", year: "2021", shift: "Shift 2", emoji: "📐" },
+];
+
+// ── STATE ─────────────────────────────────────────────────────────────────────
+let activeTab = 'academic';
+
+// ── TABS ──────────────────────────────────────────────────────────────────────
+function switchTab(tab) {
+  activeTab = tab;
+  document.getElementById('tab-academic').classList.toggle('active', tab === 'academic');
+  document.getElementById('tab-competitive').classList.toggle('active', tab === 'competitive');
+  document.getElementById('form-academic').style.display = tab === 'academic' ? '' : 'none';
+  document.getElementById('form-competitive').style.display = tab === 'competitive' ? '' : 'none';
+  document.getElementById('results-section').style.display = 'none';
+}
+
+// ── SEARCH ────────────────────────────────────────────────────────────────────
+function doSearch() {
+  let results = [];
+
+  if (activeTab === 'academic') {
+    const course = document.getElementById('ac-course').value;
+    const sem   = document.getElementById('ac-sem').value;
+    const year  = document.getElementById('ac-year').value;
+    results = academicPapers.filter(p =>
+      (!course || p.course === course) &&
+      (!sem   || p.sem === sem) &&
+      (!year  || p.year === year)
+    );
+  } else {
+    const exam    = document.getElementById('cp-exam').value;
+    const subject = document.getElementById('cp-subject').value;
+    const year    = document.getElementById('cp-year').value;
+    results = competitivePapers.filter(p =>
+      (!exam    || p.exam === exam) &&
+      (!subject || p.subject === subject) &&
+      (!year    || p.year === year)
+    );
+  }
+
+  renderResults(results);
+}
+
+function renderResults(papers) {
+  const section = document.getElementById('results-section');
+  const grid    = document.getElementById('results-grid');
+  const empty   = document.getElementById('empty-state');
+  const count   = document.getElementById('results-count');
+
+  section.style.display = '';
+  grid.innerHTML = '';
+  count.textContent = papers.length + ' paper' + (papers.length !== 1 ? 's' : '');
+
+  if (papers.length === 0) {
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+
+  papers.forEach((p, i) => {
+    const card = document.createElement('div');
+    card.className = 'paper-card';
+    card.style.animationDelay = (i * 0.06) + 's';
+
+    let tags = '';
+    if (activeTab === 'academic') {
+      tags = `<span class="tag">${p.course}</span><span class="tag">${p.sem}</span><span class="tag">${p.year}</span><span class="tag">${p.code}</span>`;
+    } else {
+      tags = `<span class="tag">${p.exam}</span><span class="tag">${p.subject}</span><span class="tag">${p.year}</span><span class="tag">${p.shift}</span>`;
+    }
+
+    card.innerHTML = `
+      <div class="paper-icon">${p.emoji}</div>
+      <div class="paper-info">
+        <div class="paper-title">${p.title}</div>
+        <div class="paper-tags">${tags}</div>
+      </div>
+      <div class="paper-actions">
+        <button class="btn-view" onclick="viewPaper('${p.title}')">👁 View</button>
+        <button class="btn-dl" onclick="dlPaper('${p.title}')">⬇ Download</button>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+
+  section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function viewPaper(title) {
+  alert(`📄 Opening: "${title}"\n\n(In production, this would open the PDF in a new tab.)`)
+}
+function dlPaper(title) {
+  alert(`⬇️ Downloading: "${title}"\n\n(In production, this would trigger a PDF download.)`)
+}
+
+// ── THEME ─────────────────────────────────────────────────────────────────────
+function toggleTheme() {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  document.getElementById('themeBtn').textContent = isDark ? '🌞' : '🌙';
+}
+
+// ── ABOUT MODAL ───────────────────────────────────────────────────────────────
+function openAbout()  { document.getElementById('modal').classList.add('open'); }
+function closeAbout() { document.getElementById('modal').classList.remove('open'); }
+function closeAboutOutside(e) { if (e.target === document.getElementById('modal')) closeAbout(); }
+</script>
+</body>
+</html>
